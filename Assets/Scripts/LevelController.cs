@@ -36,8 +36,6 @@ public class LevelController : MonoBehaviour
 
     public void AddBlock(int position)
     {
-
-        Debug.Log(position);
         Instantiate(cityBlocks[0], new Vector3(0, 0, position * 12), Quaternion.identity);
     }
 }
