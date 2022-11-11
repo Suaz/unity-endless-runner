@@ -4,17 +4,34 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] Animator animator;
-    [SerializeField] Rigidbody rigidbody;
+    [SerializeField]
+    Animator animator;
+
+    [SerializeField]
+    CharacterController characterController;
 
     private Player playerInput;
     private Player.MovementsActions movementsActions;
 
-    [SerializeField] private float movement = 0;
-    [SerializeField] private float jump = 0;
-    [SerializeField] private bool isGrounded = false;
+    [SerializeField]
+    private float movement = 0;
+
+    private Vector3 movePlayer = new Vector3();
+
+    [SerializeField]
+    private float gravity = 9.8f;
+    private float fallVelocity;
+
+    [SerializeField]
+    private float jumpForce = 0;
+
+    [SerializeField]
+    private bool jump = false;
+    private bool moving = false;
 
     // Start is called before the first frame update
+    private float currentRail = -3;
+
     void Start()
     {
         playerInput = new Player();
@@ -25,27 +42,64 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // movePlayer = new Vector3();
         movement = movementsActions.Move.ReadValue<float>();
-        jump = movementsActions.Jump.ReadValue<float>();
+        jump = movementsActions.Jump.ReadValue<float>() > 0;
+        // jump = movementsActions.Jump.triggered;
 
+        SetGravity();
+        Jump();
+        Move();
+
+        Debug.Log(movePlayer);
+        characterController.Move(movePlayer * Time.deltaTime);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void SetGravity()
     {
-        isGrounded = true;
+        if (characterController.isGrounded)
+        {
+            fallVelocity = -gravity * Time.deltaTime;
+        }
+        else
+        {
+            fallVelocity -= gravity * Time.deltaTime;
+        }
+        movePlayer.y = fallVelocity;
     }
 
-    private void FixedUpdate()
+    public void Jump()
     {
-        if (jump > 0 && isGrounded)
+        if (jump && characterController.isGrounded)
         {
-            isGrounded = false;
-            rigidbody.AddForce(Vector3.up * 250, ForceMode.Impulse);
+            fallVelocity = jumpForce;
+            movePlayer.y = fallVelocity;
+            // jump = false;
+        }
+    }
+
+    public void Move()
+    {
+        if (movement != 0 && !moving)
+        {
+            StartCoroutine(Moving(0, movement > 0 ? 2 : -2));
+        }
+    }
+
+    IEnumerator Moving(int start, int target)
+    {
+        moving = true;
+        float timeElapsed = 0f;
+        float duration = 1f;
+        while (timeElapsed < duration)
+        {
+            float current = Mathf.Lerp(start, target, timeElapsed / duration);
+            // Debug.Log(current);
+            movePlayer.x = current;
+            timeElapsed += Time.deltaTime;
+            yield return null;
         }
 
-        if (movement != 0)
-        {
-            rigidbody.AddForce(new Vector3(movement * 80, 0, 0), ForceMode.Impulse);
-        }
+        moving = false;
     }
 }
