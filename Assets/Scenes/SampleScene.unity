@@ -288,10 +288,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1577667782}
   characterController: {fileID: 1577667783}
-  movement: 0
-  gravity: 9.8
+  gravity: 20
   jumpForce: 6
   jump: 0
+  moveAhead: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,10 +438,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cityBlocks:
   - {fileID: 7301884630194115346, guid: 13e6c2a2a7f004f30905dbfd3448f0c0, type: 3}
+  health: {fileID: 1514532860550832353, guid: 7056bb00ce9e7451b98f4a834c71ea88, type: 3}
+  gem: {fileID: 6242593184417789941, guid: 0fe50849d4555461ca0a2a5b5b9f9d0d, type: 3}
+  player: {fileID: 336574413}
   minBlock: 3
   currentRail: 1
-  player: {fileID: 336574413}
-  speed: 0
+  movementSpeed: 5
+  levelSpeed: 5
 --- !u!4 &484056835
 Transform:
   m_ObjectHideFlags: 0
@@ -623,3 +626,16 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &1577667784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577667777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73caf9ea4a64f4d76bc5a467042b2ddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 336574415}

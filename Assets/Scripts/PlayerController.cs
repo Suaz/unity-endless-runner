@@ -4,36 +4,33 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    Animator animator;
+    [SerializeField] Animator animator;
+    [SerializeField] CharacterController characterController;
 
-    [SerializeField]
-    CharacterController characterController;
+    private float movement = 0;
+    [SerializeField] private float gravity = 20f;
+    [SerializeField] private float jumpForce = 0;
+    [SerializeField] private bool jump = false;
 
     private Player playerInput;
     private Player.MovementsActions movementsActions;
-
-    [SerializeField]
-    private float movement = 0;
-
     private Vector3 movePlayer = new Vector3();
-
-    [SerializeField]
-    private float gravity = 9.8f;
     private float fallVelocity;
-
-    [SerializeField]
-    private float jumpForce = 0;
-
-    [SerializeField]
-    private bool jump = false;
     private bool moving = false;
+    private int playerMovement;
 
     // Start is called before the first frame update
-    private float currentRail = -3;
+    [SerializeField] private float moveAhead = 0;
+
+    public void addHealth()
+    {
+        moveAhead = 1;
+    }
+
 
     void Start()
     {
+        playerMovement = LevelController.Instance.MovementSpeed;
         playerInput = new Player();
         movementsActions = playerInput.Movements;
         playerInput.Enable();
@@ -42,16 +39,21 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // movePlayer = new Vector3();
         movement = movementsActions.Move.ReadValue<float>();
         jump = movementsActions.Jump.ReadValue<float>() > 0;
-        // jump = movementsActions.Jump.triggered;
-
         SetGravity();
         Jump();
-        Move();
+        movePlayer.x = movement * playerMovement;
+        if (moveAhead > 0)
+        {
+            if (transform.position.z < 0)
+            {
+                movePlayer.z = Time.deltaTime*3;
+            }
 
-        Debug.Log(movePlayer);
+            moveAhead -= Time.deltaTime;
+        }
+
         characterController.Move(movePlayer * Time.deltaTime);
     }
 
@@ -65,6 +67,7 @@ public class PlayerController : MonoBehaviour
         {
             fallVelocity -= gravity * Time.deltaTime;
         }
+
         movePlayer.y = fallVelocity;
     }
 
@@ -76,30 +79,5 @@ public class PlayerController : MonoBehaviour
             movePlayer.y = fallVelocity;
             // jump = false;
         }
-    }
-
-    public void Move()
-    {
-        if (movement != 0 && !moving)
-        {
-            StartCoroutine(Moving(0, movement > 0 ? 2 : -2));
-        }
-    }
-
-    IEnumerator Moving(int start, int target)
-    {
-        moving = true;
-        float timeElapsed = 0f;
-        float duration = 1f;
-        while (timeElapsed < duration)
-        {
-            float current = Mathf.Lerp(start, target, timeElapsed / duration);
-            // Debug.Log(current);
-            movePlayer.x = current;
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        moving = false;
     }
 }

@@ -4,20 +4,35 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour
 {
-    [SerializeField]
-    GameObject[] cityBlocks;
+    [SerializeField] private GameObject[] cityBlocks;
+    [SerializeField] private GameObject health;
+    [SerializeField] private GameObject gem;
+    [SerializeField] private GameObject player;
 
-    [SerializeField]
-    int minBlock = 3;
+    [SerializeField] private int minBlock = 3;
+    [SerializeField] private int currentRail = 1;
+    [SerializeField] private int movementSpeed = 5;
+    [SerializeField] private int levelSpeed = 5;
 
-    [SerializeField]
-    int currentRail = 1;
+    private int gemCount = 0;
 
-    [SerializeField]
-    GameObject player;
+    public void addGem()
+    {
+        gemCount++;
+        Debug.Log(gemCount);
+    }
 
-    [SerializeField]
-    int speed;
+    public int MovementSpeed
+    {
+        get => movementSpeed;
+    }
+
+    public int LevelSpeed
+    {
+        get => levelSpeed;
+        set => levelSpeed = value;
+    }
+
 
     public static LevelController Instance { get; private set; }
 
@@ -35,7 +50,8 @@ public class LevelController : MonoBehaviour
         {
             AddBlock(i);
         }
-        player.transform.position = new Vector3(getRoute(1), 4, -9);
+
+        player.transform.position = new Vector3(-1, 4, -9);
     }
 
     private void OnDrawGizmos()
@@ -44,6 +60,7 @@ public class LevelController : MonoBehaviour
         {
             Gizmos.DrawWireCube(new Vector3(0, 0, (i * 12) - 6), new Vector3(12, 1, 12));
         }
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(new Vector3(-3, 0, -6), new Vector3(2, 1, 12));
         Gizmos.DrawWireCube(new Vector3(-1, 0, -6), new Vector3(2, 1, 12));
@@ -54,29 +71,24 @@ public class LevelController : MonoBehaviour
         Gizmos.DrawWireSphere(new Vector3(currentRail, 2, -9), 0.5f);
     }
 
-    private int getRoute(int route)
-    {
-        switch (route)
-        {
-            case 1:
-                return -3;
-            case 2:
-                return -1;
-            case 3:
-                return 1;
-            case 4:
-                return 3;
-        }
-        return 1;
-    }
-
     public void AddBlockAtEnd()
     {
         AddBlock(minBlock - 1);
     }
 
-    public void AddBlock(int position)
+    private void AddBlock(int position)
     {
-        Instantiate(cityBlocks[0], new Vector3(0, 0, position * 12), Quaternion.identity);
+        GameObject newBlock = Instantiate(cityBlocks[0], new Vector3(0, 0, position * 12), Quaternion.identity);
+
+        for (int i = 0; i < 4; i++)
+        {
+            Instantiate(
+                Random.Range(0f, 1f) > 0.25 ? gem : health,
+                newBlock.transform.position
+                + new Vector3(Random.Range(-3, 4), 2, Random.Range(-1, -11)),
+                Quaternion.identity,
+                newBlock.transform
+            );
+        }
     }
 }
