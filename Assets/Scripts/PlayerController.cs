@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] Animator animator;
     [SerializeField] CharacterController characterController;
-
     private float movement = 0;
     [SerializeField] private float gravity = 20f;
     [SerializeField] private float jumpForce = 0;
@@ -16,9 +15,8 @@ public class PlayerController : MonoBehaviour
     private Player.MovementsActions movementsActions;
     private Vector3 movePlayer = new Vector3();
     private float fallVelocity;
-    private bool moving = false;
+   
     private int playerMovement;
-
     // Start is called before the first frame update
     [SerializeField] private float moveAhead = 0;
 
@@ -55,6 +53,8 @@ public class PlayerController : MonoBehaviour
         }
 
         characterController.Move(movePlayer * Time.deltaTime);
+        
+       
     }
 
     public void SetGravity()
@@ -80,4 +80,10 @@ public class PlayerController : MonoBehaviour
             // jump = false;
         }
     }
+
+  
+
+
+
+
 }
