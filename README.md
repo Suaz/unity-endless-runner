@@ -1,6 +1,6 @@
  
 # Endless Runner
-Proyecto Endless Runner desarrollado en UNITY
+Proyecto Endless Runner desarrollado en UNITY.
 
 ## TODO
 
