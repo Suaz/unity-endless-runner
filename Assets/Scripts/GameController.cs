@@ -7,23 +7,25 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    public Image Base;
-    public Image vida;
+    [SerializeField] Image Base;
+    [SerializeField] Image vida;
     private float timer;
     private bool GameOver;
-    public GameObject Jugador;
-    public TextMeshProUGUI cronometro;
+    [SerializeField] GameObject Jugador;
+    [SerializeField] TextMeshProUGUI cronometro;
     public TextMeshProUGUI puntaje;
     private int puntos;
     private float vidaMax;
     private float vidaActual;
     public int intensificador;
-   
+    private bool pasarse;
+
     
   
     // Start is called before the first frame update
     void Start()
     {
+        
         puntos = 0;
         vidaMax = 100;
         vidaActual = vidaMax; 
@@ -32,8 +34,10 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        pasarse = false;
         Cronometrar();
         PerderVida();
+        Salirse();
         Perder();
     }
 
@@ -73,15 +77,21 @@ public class GameController : MonoBehaviour
 
     public bool Perder()
     {
-        if (vida.fillAmount == 0)
+        if (vida.fillAmount == 0 || pasarse == true)
             GameOver = true;
         return GameOver;
     }
 
     public void SumarP()
     {
-        
         puntos++;
         puntaje.text = "" + puntos.ToString("0");
+    }
+
+    public bool Salirse()
+    {
+        if (Jugador.transform.position.z < -12)
+            pasarse = true;
+        return pasarse;
     }
 }

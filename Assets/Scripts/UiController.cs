@@ -7,15 +7,15 @@ using TMPro;
 
 public class UiController : MonoBehaviour
 {
-    public GameObject Menu;
-    public GameObject MenuP;
-    public GameObject MenuGO;
-    private Player playerInput;
+    [SerializeField] GameObject Menu;
+    [SerializeField] GameObject MenuP;
+    [SerializeField] GameObject MenuGO;
+    [SerializeField] Player playerInput;
     private bool pausa;
     bool empezar = false;
     private bool GM;
-    public GameObject gameController;
-    public TextMeshProUGUI puntosf;
+    [SerializeField] GameObject gameController;
+    [SerializeField] TextMeshProUGUI puntosf;
 
     
 

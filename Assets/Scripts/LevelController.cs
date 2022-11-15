@@ -51,7 +51,7 @@ public class LevelController : MonoBehaviour
             AddBlock(i);
         }
 
-        player.transform.position = new Vector3(-1, 4, -9);
+        player.transform.position = new Vector3(-1, 1, -4);
     }
 
     private void OnDrawGizmos()
