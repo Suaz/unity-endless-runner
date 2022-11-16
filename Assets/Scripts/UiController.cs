@@ -10,6 +10,7 @@ public class UiController : MonoBehaviour
     [SerializeField] GameObject Menu;
     [SerializeField] GameObject MenuP;
     [SerializeField] GameObject MenuGO;
+    [SerializeField] GameObject MenuControles;
     [SerializeField] Player playerInput;
     private bool pausa;
     bool empezar = false;
@@ -111,7 +112,16 @@ public class UiController : MonoBehaviour
     public void Reiniciar()
     {
         SceneManager.LoadScene("SampleScene");
-        Menu.SetActive(false);
-        Time.timeScale = 1f;
+        
+    }
+
+    public void EntrarAControles()
+    {
+        MenuControles.SetActive(true);
+    }
+
+    public void SalirDeControles()
+    {
+        MenuControles.SetActive(false);
     }
 }

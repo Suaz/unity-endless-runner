@@ -90,7 +90,7 @@ public class GameController : MonoBehaviour
 
     public bool Salirse()
     {
-        if (Jugador.transform.position.z < -12)
+        if (Jugador.transform.position.z < -11)
             pasarse = true;
         return pasarse;
     }
