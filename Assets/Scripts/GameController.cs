@@ -78,7 +78,10 @@ public class GameController : MonoBehaviour
     public bool Perder()
     {
         if (vida.fillAmount == 0 || pasarse == true)
+        {
             GameOver = true;
+
+        }
         return GameOver;
     }
 

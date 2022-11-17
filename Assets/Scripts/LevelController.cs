@@ -85,7 +85,7 @@ public class LevelController : MonoBehaviour
             Instantiate(
                 Random.Range(0f, 1f) > 0.25 ? gem : health,
                 newBlock.transform.position
-                + new Vector3(Random.Range(-3, 4), 2, Random.Range(-1, -11)),
+                + new Vector3(Random.Range(-3, 4), 1.5f, Random.Range(-1, -11)),
                 Quaternion.identity,
                 newBlock.transform
             );

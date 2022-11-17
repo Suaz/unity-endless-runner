@@ -7,19 +7,23 @@ using TMPro;
 
 public class UiController : MonoBehaviour
 {
-    [SerializeField] GameObject Menu;
-    [SerializeField] GameObject MenuP;
-    [SerializeField] GameObject MenuGO;
-    [SerializeField] GameObject MenuControles;
-    [SerializeField] Player playerInput;
+    [SerializeField] private GameObject Menu;
+    [SerializeField] private GameObject MenuP;
+    [SerializeField] private GameObject MenuGO;
+    [SerializeField] private GameObject MenuControles;
+    [SerializeField] private Player playerInput;
     private bool pausa;
     bool empezar = false;
     private bool GM;
-    [SerializeField] GameObject gameController;
-    [SerializeField] TextMeshProUGUI puntosf;
+    [SerializeField] private GameObject gameController;
+    [SerializeField] private TextMeshProUGUI puntosf;
+    private AudioManager audioManager;//
+    [SerializeField] private GameObject jugador;
 
-    
-
+    private void Awake()
+    {
+        audioManager = FindObjectOfType<AudioManager>();// Busca el objeto instanciado en el proyecto
+    }
     void Start()
     {
         playerInput = new Player();
@@ -61,6 +65,8 @@ public class UiController : MonoBehaviour
         empezar = true;
         playerInput.Enable();
         GM = false;
+        audioManager.SeleccionarAudio(0, 0.5f);// reproduce sonido botones
+        audioManager.EncenderMusica(jugador); // enciende la musica
     }
 
     public void Pausar()
@@ -69,6 +75,7 @@ public class UiController : MonoBehaviour
         {
             Time.timeScale = 0f;
             MenuP.SetActive(true);
+            
         }
     }
 
@@ -77,6 +84,7 @@ public class UiController : MonoBehaviour
 
         if (pausa == false)
         {
+            
             Time.timeScale = 1f;
             MenuP.SetActive(false);
         }
@@ -84,17 +92,19 @@ public class UiController : MonoBehaviour
 
     public void Continuar()
     {
+        audioManager.SeleccionarAudio(0, 0.5f);
         pausa = false;
     }
     public void Salir()
     {
+        audioManager.SeleccionarAudio(0, 0.5f);
         Application.Quit();// no se nota desde unity.
     }
 
     public void OnPausar(InputValue valor)
     {
         pausa = !pausa;
-
+        audioManager.SeleccionarAudio(0, 0.5f);
     }
 
     public void Perder()
@@ -102,6 +112,8 @@ public class UiController : MonoBehaviour
         GM = gameController.GetComponent<GameController>().Perder();
         if (GM == true)
         {
+            audioManager.SeleccionarAudio(4, 0.5f);// reproduce GM
+            audioManager.ApagarMusica(jugador); //Se apaga la musica
             Time.timeScale = 0f;
             MenuGO.SetActive(true);
             playerInput.Disable();
@@ -117,11 +129,13 @@ public class UiController : MonoBehaviour
 
     public void EntrarAControles()
     {
+        audioManager.SeleccionarAudio(0, 0.5f);
         MenuControles.SetActive(true);
     }
 
     public void SalirDeControles()
     {
+        audioManager.SeleccionarAudio(0, 0.5f);
         MenuControles.SetActive(false);
     }
 }
