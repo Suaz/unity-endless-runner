@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
     [SerializeField] private GameObject[] cityBlocks;
+    [SerializeField] private GameObject[] cityObstacles;
     [SerializeField] private GameObject health;
     [SerializeField] private GameObject gem;
     [SerializeField] private GameObject player;
@@ -50,8 +51,6 @@ public class LevelController : MonoBehaviour
         {
             AddBlock(i);
         }
-
-        
     }
 
     private void OnDrawGizmos()
@@ -78,7 +77,8 @@ public class LevelController : MonoBehaviour
 
     private void AddBlock(int position)
     {
-        GameObject newBlock = Instantiate(cityBlocks[0], new Vector3(0, 0, position * 12), Quaternion.identity);
+        GameObject newBlock = Instantiate(cityBlocks[Random.Range(0, 2)], new Vector3(0, 0, position * 12),
+            Quaternion.identity);
 
         for (int i = 0; i < 4; i++)
         {
@@ -86,6 +86,17 @@ public class LevelController : MonoBehaviour
                 Random.Range(0f, 1f) > 0.25 ? gem : health,
                 newBlock.transform.position
                 + new Vector3(Random.Range(-3, 4), 2, Random.Range(-1, -11)),
+                Quaternion.identity,
+                newBlock.transform
+            );
+        }
+
+        for (int i = 0; i < 6; i++)
+        {
+            Instantiate(
+                cityObstacles[Random.Range(0, cityObstacles.Length)],
+                newBlock.transform.position
+                + new Vector3(Random.Range(-3, 4), 0, Random.Range(-1, -11)),
                 Quaternion.identity,
                 newBlock.transform
             );
