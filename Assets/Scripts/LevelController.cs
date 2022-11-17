@@ -8,7 +8,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject health;
     [SerializeField] private GameObject gem;
     [SerializeField] private GameObject player;
-
+    private int bloque;
     [SerializeField] private int minBlock = 3;
     [SerializeField] private int currentRail = 1;
     [SerializeField] private int movementSpeed = 5;
@@ -71,6 +71,12 @@ public class LevelController : MonoBehaviour
         Gizmos.DrawWireSphere(new Vector3(currentRail, 2, -9), 0.5f);
     }
 
+    public int SeleccionarBloque()
+    {
+        bloque = Random.Range(0,2);
+        return bloque;
+    }
+
     public void AddBlockAtEnd()
     {
         AddBlock(minBlock - 1);
@@ -78,8 +84,8 @@ public class LevelController : MonoBehaviour
 
     private void AddBlock(int position)
     {
-        GameObject newBlock = Instantiate(cityBlocks[0], new Vector3(0, 0, position * 12), Quaternion.identity);
-
+        bloque = SeleccionarBloque();
+        GameObject newBlock = Instantiate(cityBlocks[bloque], new Vector3(0, 0, position * 12), Quaternion.identity);
         for (int i = 0; i < 4; i++)
         {
             Instantiate(
